@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <style>
+        #chartdiv {
+            width: 100%;
+            height: 500px;
+        }
+        .padding-right{
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="col-xs-12">
+    <p>change the color and press again on the event button with same name</p>
+</div>
+<span class="padding-right">
+    <input id="stop"  value="#b9233c" type="color" onchange="changeColor('stop')">
+    <label>Stop</label>
+</span>
+<span class="padding-right">
+    <input id="producing"  value="#27b94a" type="color" onchange="changeColor('producing')">
+    <label>producing</label>
+</span>
+<span class="padding-right">
+    <input id="replacingParts" value="#b9af1d" type="color" onchange="changeColor('replacingParts')">
+     <label>replacingParts</label>
+</span>
+<span class="padding-right">
+    <input id="inspection" value="#b95995" type="color" onchange="changeColor('inspection')">
+     <label>inspection</label>
+</span>
+<span class="padding-right">
+    <input id="maintenance" value="#2b53b9" type="color" onchange="changeColor('maintenance')">
+     <label>maintenance</label>
+</span>
+<div id="chartdiv"></div>
+
+
+<h3> EVENTS FOR TEST </h3>
+<button onclick="stop()">Stop</button>
+<button onclick="producing()">Producing</button>
+<button onclick="replacingParts()">Replacing Parts</button>
+<button onclick="inspection()">Inspection</button>
+<button onclick="maintenance()">Maintenance</button>
+<button onclick="stopInterval()">stop Interval</button>
+
+
+</body>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/gantt.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+
+<!--MOMENT -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script>
+    var dataProvider = [
+        {
+            "category": "Machine #1",
+            "segments": [
+//            {
+//                "start": "2016-01-01 10:00:00",
+//                "end": "2016-01-01 11:50:00",
+//                "color": "#FF0000",
+//                "task": "Gathering requirements"
+//            },
+//            {
+//                "start": "2016-01-01 12:50:00",
+//                "end": "2016-01-01 13:00:00",
+//                "color": "#df7573",
+//                "task": "Producing specifications"
+//            },
+//                {
+//                    "start": AmCharts.stringToDate("2017-04-19 00:00:00", "YYYY-MM-DD HH:NN"),
+//                    "end": AmCharts.stringToDate("2017-04-19 02:45:00", "YYYY-MM-DD HH:NN"),
+//                    "color": "#24b936",
+//                    "task": "Gathering requirements"
+//                },
+//                {
+//                    "start": AmCharts.stringToDate("2017-04-19 03:25:00", "YYYY-MM-DD HH:NN"),
+//                    "end": AmCharts.stringToDate("2017-04-19 04:45:00", "YYYY-MM-DD HH:NN"),
+//                    "color": "#df7573",
+//                    "task": "Producing specifications"
+//                },
+            ]
+        }
+    ];
+
+    var colors = ['#FF0000','#642EFE','#04B404','#2ECCFA','#F7FE2E'];
+
+    function dataUpdatedHandler(type, handler){
+//        console.log('type',type);
+//        console.log('handler',type);
+    }
+
+
+    var dataFromMachins = {
+        stop: {
+
+        },
+        producing: {
+
+        },
+        replacingParts: {
+
+        },
+        inspection: {
+
+        },
+        maintenance: {
+
+        }
+    };
+
+    var currentStateOfMachine = null;
+    var color = {};
+    stop();
+
+    function changeColor(eventId) {
+        color[eventId]  = document.getElementById(eventId).value;
+    }
+
+    function stop() {
+//        TO CHANGE COLOR
+        dataFromMachins['stop'] = {
+            "start": AmCharts.stringToDate("2017-04-01 07:00:00", "YYYY-MM-DD HH:NN:SS"),
+            "end": AmCharts.stringToDate("2017-04-01 07:01:00", "YYYY-MM-DD HH:NN:SS"),
+            "color": color['stop'] || '#b9233c',
+            "task": "Stop",
+            taskName:"stop"
+        };
+        currentStateOfMachine = dataFromMachins['stop'];
+        currentStateOfMachine.start =  AmCharts.stringToDate(moment().format('YYYY-MM-DD hh:mm:ss'), "YYYY-MM-DD HH:NN:SS");
+        dataProvider[0].segments.push(currentStateOfMachine);
+    }
+
+    function producing() {
+        dataFromMachins['producing'] = {
+            "start": AmCharts.stringToDate("2017-04-01 07:00:00", "YYYY-MM-DD HH:NN:SS"),
+            "end": AmCharts.stringToDate("2017-04-01 07:01:00", "YYYY-MM-DD HH:NN:SS"),
+            "color": color['producing'] || "#27b94a",
+            "task": "Producing",
+            taskName:"producing"
+        };
+        currentStateOfMachine = dataFromMachins['producing'];
+        currentStateOfMachine.start = AmCharts.stringToDate(moment().format('YYYY-MM-DD hh:mm:ss'), "YYYY-MM-DD HH:NN:SS");
+        dataProvider[0].segments.push(currentStateOfMachine);
+    }
+
+    function replacingParts() {
+        dataFromMachins['replacingParts'] = {
+            "start": AmCharts.stringToDate("2017-04-01 07:00:00", "YYYY-MM-DD HH:NN:SS"),
+            "end": AmCharts.stringToDate("2017-04-01 07:01:00", "YYYY-MM-DD HH:NN:SS"),
+            "color": color['replacingParts'] || "#b9af1d",
+            "task": "replacingParts",
+            taskName:'replacingParts'
+        };
+        currentStateOfMachine = dataFromMachins['replacingParts'];
+        currentStateOfMachine.start = AmCharts.stringToDate(moment().format('YYYY-MM-DD hh:mm:ss'), "YYYY-MM-DD HH:NN:SS");
+        dataProvider[0].segments.push(currentStateOfMachine);
+
+    }
+
+    function inspection() {
+        dataFromMachins['inspection'] = {
+            "start": AmCharts.stringToDate("2017-04-01 07:00:00", "YYYY-MM-DD HH:NN:SS"),
+            "end": AmCharts.stringToDate("2017-04-01 07:01:00", "YYYY-MM-DD HH:NN:SS"),
+            "color": color['inspection'] || "#b95995",
+            "task": "Inspection",
+            taskName:'inspection'
+        };
+        currentStateOfMachine = dataFromMachins['inspection'];
+        currentStateOfMachine.start = AmCharts.stringToDate(moment().format('YYYY-MM-DD hh:mm:ss'), "YYYY-MM-DD HH:NN:SS");
+        dataProvider[0].segments.push(currentStateOfMachine);
+    }
+
+    function maintenance() {
+        dataFromMachins['maintenance'] = {
+            "start": AmCharts.stringToDate("2017-04-01 07:00:00", "YYYY-MM-DD HH:NN:SS"),
+            "end": AmCharts.stringToDate("2017-04-01 07:01:00", "YYYY-MM-DD HH:NN:SS"),
+            "color": color['maintenance'] || "#2b53b9",
+            "task": "Maintenance",
+            taskName:'maintenance'
+        };
+        currentStateOfMachine = dataFromMachins['maintenance'];
+        currentStateOfMachine.start = AmCharts.stringToDate(moment().format('YYYY-MM-DD hh:mm:ss'), "YYYY-MM-DD HH:NN:SS");
+        dataProvider[0].segments.push(currentStateOfMachine);
+
+    }
+
+    var isIntervaStoped = false;
+    function stopInterval(){
+//        clearInterval(interval3);
+        isIntervaStoped = !isIntervaStoped;
+    }
+
+// DRAWING LOOP updating reach second
+    var isCheck3 = true;
+    if(isCheck3){
+        interval3 = setInterval(function () {
+//          //updating date / time
+           currentStateOfMachine.end = AmCharts.stringToDate(moment().format('YYYY-MM-DD hh:mm:ss'), "YYYY-MM-DD HH:NN:SS");
+//           //updating the GUNT data
+            if(!isIntervaStoped){
+                chart.dataProvider = dataProvider;
+                chart.validateData();
+            }
+
+            console.log(chart.dataProvider);
+            console.log(dataProvider[0].segments);
+//          chart = AmCharts.makeChart( "chartdiv",basic);
+        },1000);
+    }
+
+
+    //Chat
+    var chartConf = {
+        "type": "gantt",
+        "theme": "light",
+        "marginRight": 70,
+        "period": "HH",
+        "listeners":[{"event":"dataUpdated", "method":dataUpdatedHandler}],
+        "dataDateFormat": "YYYY-MM-DD HH-MM",
+        "columnWidth": 0.1,
+        "valueAxis": {
+            "type": "date"
+        },
+        "brightnessStep": 7,
+        "graph": {
+            "fillAlphas": 1,
+            "lineAlpha": 1,
+            "lineColor": "#fff",
+            "fillAlphas": 0.85,
+            "balloonText": "<b>[[task]]</b>:<br />[[open]] -- [[value]]"
+        },
+        "rotate": true,
+        "categoryField": "category",
+        "segmentsField": "segments",
+        "colorField": "color",
+        "startDateField": "start",
+        "endDateField": "end",
+        "dataProvider": dataProvider,
+        "valueScrollbar": {
+            "autoGridCount": false
+        },
+        "chartCursor": {
+            "cursorColor": "#55bb76",
+            "valueBalloonsEnabled": false,
+            "cursorAlpha": 0,
+            "valueLineAlpha": 0.5,
+            "valueLineBalloonEnabled": true,
+            "valueLineEnabled": true,
+            "zoomable": false,
+            "valueZoomable": true
+        },
+        "export": {
+            "enabled": true
+        }
+    };
+    var chart = AmCharts.makeChart( "chartdiv", chartConf);
+    console.log(chart)
+</script>
+</html>
